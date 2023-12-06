@@ -14,17 +14,6 @@ if (typeof document !== 'undefined' && typeof window !== 'undefined') {
   // ensure globality even if entire library were function wrapped (as in Meteor.js packaging system)
   window.fabric = fabric;
 }
-else {
-  // assume we're running under node.js when document/window are not present
-  fabric.document = require("jsdom")
-    .jsdom("<!DOCTYPE html><html><head></head><body></body></html>");
-
-  if (fabric.document.createWindow) {
-    fabric.window = fabric.document.createWindow();
-  } else {
-    fabric.window = fabric.document.parentWindow;
-  }
-}
 
 /**
  * True when in environment that supports touch events
