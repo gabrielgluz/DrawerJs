@@ -28316,7 +28316,7 @@ DrawerJs.texts = {
        }
 
       // hotfix for paths containing drawer folder
-      this.options.canvasProperties.rotationCursor = 'url(' + util.getDrawerFolderUrl() + 'assets/cursor-fa-rotate-right.cur), default';
+      this.options.canvasProperties.rotationCursor = 'url(' + util.getDrawerFolderUrl() + '/assets/cursor-fa-rotate-right.cur), default';
 
       if (!this.activeColor) {
           this.activeColor = this.options.activeColor || this.defaultOptions.activeColor;
@@ -30729,7 +30729,7 @@ DrawerJs.texts = {
             this.options =  $.extend(true, this._defaultOptions || {}, options || {});
 
             // create icon
-            var iconPath = DrawerJs.util.getDrawerFolderUrl() + 'assets/pencil-square-o.32.png';
+            var iconPath = DrawerJs.util.getDrawerFolderUrl() + '/assets/pencil-square-o.32.png';
 
             // initialize control
           if (this.options.editIconMode) {
@@ -37628,7 +37628,7 @@ ToolOptionsToolbar.prototype.customScrollMode = true;
       var drawerFolderUrl = util.getDrawerFolderUrl();
       if(drawerFolderUrl){
         _this.options.cursorUrl = 'url(' + drawerFolderUrl +
-        'assets/cursor-fa-eraser.cur), default';
+        '/assets/cursor-fa-eraser.cur), default';
       }
     }
 
@@ -38316,7 +38316,7 @@ ToolOptionsToolbar.prototype.customScrollMode = true;
       var drawerFolderUrl = util.getDrawerFolderUrl();
       if(drawerFolderUrl){
         _this.options.cursorUrl = 'url(' + drawerFolderUrl +
-        'assets/cursor-fa-pencil.cur), default';
+        '/assets/cursor-fa-pencil.cur), default';
       }
     }
   };
@@ -40320,7 +40320,7 @@ CloseButton.prototype._onCloseButtonClick = function() {
    */
   ImageCropPlugin.prototype._setupCropElements = function () {
     var controlsBlockHtml,
-        assetsUrl = util.getDrawerFolderUrl() + 'assets/',
+        assetsUrl = util.getDrawerFolderUrl() + '/assets/',
         cursorStyleAttr = 'style="cursor: url(' + assetsUrl + 'cursor-fa-crop-right.cur), crosshair"',
         borderStyleAttr = 'style="background: url(' + assetsUrl + 'border.gif);"';
 
@@ -44230,7 +44230,7 @@ CloseButton.prototype._onCloseButtonClick = function() {
 
       this.hideOnEditMode = true;
       // more stuff
-      this.assetsUrl = util.getDrawerFolderUrl() + 'assets/';
+      this.assetsUrl = util.getDrawerFolderUrl() + '/assets/';
       this.shouldDisplayTransparent = false;
 
       this.colors = this.options.colors;
@@ -46727,7 +46727,7 @@ CloseButton.prototype._onCloseButtonClick = function() {
 
     // DrawerJs is created, so basePath is set and  util.getDrawerFolderUrl() works properly.
     // so we can set assets folder
-    this.assetsFolder = util.getDrawerFolderUrl() + 'assets/';
+    this.assetsFolder = util.getDrawerFolderUrl() + '/assets/';
 
     // complete default option paths by assets path.
     this._setGlobalClickHandler();
