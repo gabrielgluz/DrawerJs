@@ -2,9 +2,6 @@
  */
 
 /*! Fabric.js Copyright 2008-2015, Printio (Juriy Zaytsev, Maxim Chernyak) */
-
-const jQuery = require('jquery')
-
 var fabric = fabric || { version: "1.7.1" };
 if (typeof exports !== 'undefined') {
   exports.fabric = fabric;
