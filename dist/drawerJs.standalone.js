@@ -26147,9 +26147,7 @@ fabric.util.object.extend(fabric.IText.prototype, /** @lends fabric.IText.protot
 
   var DOMParser = require('xmldom').DOMParser,
       URL = require('url'),
-      HTTP = require('http'),
-      HTTPS = require('https'),
-
+      axios = require('axios');
       Canvas = require('canvas'),
       Image = require('canvas').Image;
 
@@ -26162,29 +26160,32 @@ fabric.util.object.extend(fabric.IText.prototype, /** @lends fabric.IText.protot
       oURL.port = ( oURL.protocol.indexOf('https:') === 0 ) ? 443 : 80;
     }
 
-    // assign request handler based on protocol
-    var reqHandler = (oURL.protocol.indexOf('https:') === 0 ) ? HTTPS : HTTP,
-        req = reqHandler.request({
-          hostname: oURL.hostname,
-          port: oURL.port,
-          path: oURL.path,
-          method: 'GET'
-        }, function(response) {
-          var body = '';
-          if (encoding) {
-            response.setEncoding(encoding);
-          }
-          response.on('end', function () {
-            callback(body);
-          });
-          response.on('data', function (chunk) {
-            if (response.statusCode === 200) {
-              body += chunk;
-            }
-          });
+    // assign request handler
+    axios({
+      method: 'get',
+      url: `${oURL.port === 443 ? 'https' : 'http'}://${oURL.hostname}:${oURL.port}${oURL.path}`,
+    })
+    .then(response => {
+      let body = '';
+      const encoding = '';
+    
+      if (response.status === 200) {
+        if (encoding) {
+          response.data.setEncoding(encoding);
+        }
+    
+        response.data.on('end', () => {
+          callback(body);
         });
-
-    req.on('error', function(err) {
+    
+        response.data.on('data', chunk => {
+          if (response.status === 200) {
+            body += chunk;
+          }
+        });
+      }
+    })
+    .catch(err => {
       if (err.errno === process.ECONNREFUSED) {
         fabric.log('ECONNREFUSED: connection refused to ' + oURL.hostname + ':' + oURL.port);
       }
@@ -26199,16 +26200,39 @@ fabric.util.object.extend(fabric.IText.prototype, /** @lends fabric.IText.protot
 
   /** @private */
   function requestFs(path, callback) {
-    var fs = require('fs');
-    fs.readFile(path, function (err, data) {
+    readFile(path, function (err, data) {
       if (err) {
-        fabric.log(err);
-        throw err;
+        fabric.log(err)
+        throw err
+      } else {
+        callback(data)
       }
-      else {
-        callback(data);
-      }
-    });
+    })
+  }
+
+  function readFile(path, callback) {
+    const input = document.createElement('input');
+    input.type = 'file';
+  
+    const handleFileChange = (event) => {
+      const file = event.target.files[0];
+  
+      const reader = new FileReader();
+  
+      reader.onload = (event) => {
+        const content = event.target.result;
+        callback(null, content);
+      };
+  
+      reader.onerror = (error) => {
+        callback(error, null);
+      };
+  
+      reader.readAsText(file);
+    };
+  
+    input.addEventListener('change', handleFileChange);
+    input.click();
   }
 
   fabric.util.loadImage = function(url, callback, context) {
