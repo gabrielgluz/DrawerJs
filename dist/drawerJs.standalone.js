@@ -31103,48 +31103,50 @@ this.DrawerJs.clipping = {};
 (function (namespace) {
   "use strict";
 
-  namespace.runClippingOperation = function (params) {
-    var firstShape = params.firstShape;
-    var secondShape = params.secondShape;
-
-    var polyPoints = prepareForClipper(
-      firstShape.width, firstShape.currentWidth,
-      firstShape.height, firstShape.currentHeight,
-      firstShape.center, firstShape.angleInRadians, firstShape.points);
-
-    // TODO: another shape angle and scaling needed
-    var anotherShapePointsGlobal =
-      localToGlobal(secondShape.center, secondShape.points);
-
-    var solution = processShape(params.cmd, polyPoints,
-      uppercaseCoords(anotherShapePointsGlobal));
-
-    if (secondShape.centersQueue) {
-      for (var i = 0; i < secondShape.centersQueue.length; i++) {
-
-        anotherShapePointsGlobal = localToGlobal(
-          secondShape.centersQueue[i], secondShape.points
-        );
-
-        solution = processShape(
-          params.cmd, solution, uppercaseCoords(anotherShapePointsGlobal)
-        );
+  if(namespace) {
+    namespace.runClippingOperation = function (params) {
+      var firstShape = params.firstShape;
+      var secondShape = params.secondShape;
+  
+      var polyPoints = prepareForClipper(
+        firstShape.width, firstShape.currentWidth,
+        firstShape.height, firstShape.currentHeight,
+        firstShape.center, firstShape.angleInRadians, firstShape.points);
+  
+      // TODO: another shape angle and scaling needed
+      var anotherShapePointsGlobal =
+        localToGlobal(secondShape.center, secondShape.points);
+  
+      var solution = processShape(params.cmd, polyPoints,
+        uppercaseCoords(anotherShapePointsGlobal));
+  
+      if (secondShape.centersQueue) {
+        for (var i = 0; i < secondShape.centersQueue.length; i++) {
+  
+          anotherShapePointsGlobal = localToGlobal(
+            secondShape.centersQueue[i], secondShape.points
+          );
+  
+          solution = processShape(
+            params.cmd, solution, uppercaseCoords(anotherShapePointsGlobal)
+          );
+        }
       }
+  
+      solution = ClipperLib.JS.Lighten(solution, 0.1);
+  
+      var result = null;
+  
+      if (solution.length > 0) {
+        result = restoreAfterClipper(
+          firstShape.currentWidth, firstShape.width,
+          firstShape.currentHeight, firstShape.height,
+          firstShape.center, firstShape.angleInRadians * -1, solution);
+      }
+  
+      return result;
     }
-
-    solution = ClipperLib.JS.Lighten(solution, 0.1);
-
-    var result = null;
-
-    if (solution.length > 0) {
-      result = restoreAfterClipper(
-        firstShape.currentWidth, firstShape.width,
-        firstShape.currentHeight, firstShape.height,
-        firstShape.center, firstShape.angleInRadians * -1, solution);
-    }
-
-    return result;
-  };
+  }
 
 
   var processShape = function (cmd, firstShapePoints, secondShapePoints) {
