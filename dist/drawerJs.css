@@ -2518,14 +2518,6 @@
      white-space: nowrap;
      transition: opacity 0.2s;
  }
- body {
-     overflow: scroll !important;
- }
- 
- .hidden {
-     display: none !important;
-     visibility: hidden !important
- }
  
  #redactor-drawer-box .sp-replacer {
      padding: 0;
